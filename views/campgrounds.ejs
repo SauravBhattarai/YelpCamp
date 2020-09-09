@@ -1,0 +1,32 @@
+<%- include("partials/header") %>
+
+<div class="container">
+    <header class="jumbotron alignment">
+        <h1 class="display-4">Welcome to YelpCamp</h1>
+        <p class="lead">Explore our Hand Picked Campgrounds</p>
+        <hr class="my-4">
+        <p class="lead">
+            <a class="btn btn-primary btn-lg" href="/" role="button">Home</a>
+            <a class="btn btn-primary btn-lg" href="/campgrounds/add" role="button">Add Campgrounds</a>
+        </p>
+    </header>
+
+    <div class="row justify-content-end">
+        <% campgrounds.forEach (campground => { %>
+        <div class="col-md-4 col-sm-6 mb-3">
+            <div class="card h-100">
+                <img class="card-img-top" src="<%= campground.image %>" alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title"><%= campground.name %></h5>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    <a href="#" class="btn btn-primary">Learn More</a>
+                </div>
+            </div>
+        </div>
+        <% }) %>
+    </div>
+</div>
+
+
+<%- include ("partials/footer") %>   
+
