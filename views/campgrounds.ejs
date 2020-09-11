@@ -2,7 +2,7 @@
 
 <div class="container">
     <header class="jumbotron alignment">
-        <h1 class="display-4">Welcome to YelpCamp</h1>
+        <h1 class="display-4">WELCOME TO YELPCAMP</h1>
         <p class="lead">Explore our Hand Picked Campgrounds</p>
         <hr class="my-4">
         <p class="lead">
@@ -11,15 +11,14 @@
         </p>
     </header>
 
-    <div class="row justify-content-end">
+    <div class="row justify-content-start">
         <% campgrounds.forEach (campground => { %>
         <div class="col-md-4 col-sm-6 mb-3">
             <div class="card h-100">
                 <img class="card-img-top" src="<%= campground.imageUrl %>" alt="Card image cap">
                 <div class="card-body">
                     <h5 class="card-title"><%= campground.name %></h5>
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                    <a href="#" class="btn btn-primary">Learn More</a>
+                    <a href="/campgrounds/<%= campground._id %>" class="btn btn-primary">More Info</a>
                 </div>
             </div>
         </div>

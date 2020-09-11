@@ -10,6 +10,10 @@ const addCampgroundSchema = mongoose.Schema({
     imageUrl: {
         type: String,
         required: true
+    },
+    description: { 
+        type: String,
+        required: true 
     }
 });
 
