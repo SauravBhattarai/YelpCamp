@@ -7,13 +7,12 @@ require('dotenv/config');
 
 // Body parser
 const bodyParser = require('body-parser');
-app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 app.set("view engine", "ejs");
 
 
-// Importing Routes => campgrounds
+// Importing Routes (i.e campgrounds)
 const campgroundsRoute = require('./routes/campgrounds');
 app.use('/campgrounds', campgroundsRoute);
 

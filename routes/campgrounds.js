@@ -4,7 +4,6 @@ const router = express.Router();
 
 // Import the DataBase file
 const campgrounddb = require('../models/addcampgrounds');
-const { json } = require('body-parser');
 
 router.get("/", async (req, res) => {
     try {
