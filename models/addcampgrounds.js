@@ -14,7 +14,13 @@ const addCampgroundSchema = mongoose.Schema({
     description: { 
         type: String,
         required: true 
-    }
+    },
+    comments: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Comment"
+        }
+    ]
 });
 
 // Export the schema as the variable created above and give it a name ('AddCampground' in this case) 

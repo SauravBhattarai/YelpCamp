@@ -3,16 +3,24 @@ const app = express();
 
 const mongoose = require('mongoose');
 
+// Importing the seed.js file
+const seedDB = require('./seeds');
+seedDB();
+
 require('dotenv/config');
 
 // Body parser
 const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({extended: true}));
 
+// Making the directory "public" static 
+app.use(express.static(__dirname + '/public'));
+
+// Setting .ejs file to be viewed by default
 app.set("view engine", "ejs");
 
 
-// Importing Routes (i.e campgrounds)
+// Importing Campgrounds Routes
 const campgroundsRoute = require('./routes/campgrounds');
 app.use('/campgrounds', campgroundsRoute);
 
@@ -28,7 +36,7 @@ app.get("*", (req, res) => {
 
 
 //Connecting to Database
-mongoose.connect(process.env.DB_CONNECTION , { useNewUrlParser: true, useUnifiedTopology: true}, () => {
+mongoose.connect(process.env.DB_CONNECTION , {useNewUrlParser: true, useUnifiedTopology: true}, () => {
     console.log("Connected to Database");
 });
 
