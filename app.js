@@ -1,12 +1,15 @@
-const express = require('express'),
-      bodyParser = require('body-parser'),
-      mongoose = require('mongoose'),
-      passport = require('passport'),
-      LocalStrategy = require('passport-local'),
-      seedDB = require('./seeds'),
-      campgroundsRoute = require('./routes/campgrounds'),
-      authRoute = require('./routes/auth'),
-      User = require('./models/user');
+const express        = require('express'),
+      bodyParser     = require('body-parser'),
+      mongoose       = require('mongoose'),
+      passport       = require('passport'),
+      LocalStrategy  = require('passport-local'),
+      seedDB         = require('./seeds'),
+      User           = require('./models/user');
+
+// Importing routes
+const campgroundsRoute = require('./routes/campgrounds'),
+      authRoute        = require('./routes/auth'),
+      commentRoute     = require("./routes/comments");
 
 require('dotenv/config');
 
@@ -38,6 +41,7 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
+// Making username as global variable
 app.use((req, res, next) => {
     res.locals.currentUser = req.user;
     next();
@@ -50,6 +54,9 @@ app.get("/", (req, res) => {
 
 //Campgrounds Routes
 app.use('/campgrounds', campgroundsRoute);
+
+//Comments Routes
+app.use('/campgrounds/:postId/comments/', commentRoute);
 
 // Auth Routes
 app.use('/user', authRoute);

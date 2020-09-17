@@ -1,10 +1,9 @@
-const express = require('express');
+const express = require('express'),
+      router  = express.Router({mergeParams: true});
 
-const router = express.Router();
-
-const Comment = require('../models/comments');
-// // Import the DataBase file
-const campgrounddb = require('../models/addcampgrounds');
+// // Import the DataBase schemas
+const Comment      = require('../models/comments'),
+      campgrounddb = require('../models/addcampgrounds');
 
 
 // INDEX route
@@ -59,39 +58,6 @@ router.get("/:postId", (req, res) => {
         console.log(error.message);
     }
 });
-
-// Creating a NEW form for submitting comment
-router.get("/:postId/comments/new", isLoggedIn, (req, res) => {
-    campgrounddb.findById(req.params.postId, (error, campground) => {
-        if (error) {
-            console.log(error.message);
-        } else {
-            res.render("comments/new", {campground: campground});
-        }
-    });
-});
-
-
-router.post("/:postId/comments", isLoggedIn, (req, res) => {
-    campgrounddb.findById(req.params.postId, (error, campground) => {
-        if (error) {
-            console.log(error.message);
-            res.redirect("/");
-        } else {
-            // console.log(req.body.comment);
-            Comment.create(req.body.comment, (error, comment) => {
-                if (error) {
-                    console.log(error.message);
-                } else {
-                    campground.comments.push(comment);
-                    campground.save();
-                    res.redirect("/campgrounds/" + campground._id);
-                }
-            });
-        }
-    });
-});
-
 
 // Authentication Middleware
 function isLoggedIn(req, res, next) {
