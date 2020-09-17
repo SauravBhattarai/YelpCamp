@@ -1,16 +1,22 @@
-const express = require('express');
-const app = express();
-
-const mongoose = require('mongoose');
-
-// Importing the seed.js file
-const seedDB = require('./seeds');
-seedDB();
+const express = require('express'),
+      bodyParser = require('body-parser'),
+      mongoose = require('mongoose'),
+      passport = require('passport'),
+      LocalStrategy = require('passport-local'),
+      seedDB = require('./seeds'),
+      campgroundsRoute = require('./routes/campgrounds'),
+      authRoute = require('./routes/auth'),
+      User = require('./models/user');
 
 require('dotenv/config');
 
+const app = express();
+
+
+// Running seeds file to configure and restart data
+// seedDB();
+
 // Body parser
-const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({extended: true}));
 
 // Making the directory "public" static 
@@ -19,15 +25,35 @@ app.use(express.static(__dirname + '/public'));
 // Setting .ejs file to be viewed by default
 app.set("view engine", "ejs");
 
+// Paspport Configuration
+app.use(require('express-session')({
+    secret: process.env.SECRET,
+    resave: false,
+    saveUninitialized: false
+}));
 
-// Importing Campgrounds Routes
-const campgroundsRoute = require('./routes/campgrounds');
-app.use('/campgrounds', campgroundsRoute);
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
+app.use((req, res, next) => {
+    res.locals.currentUser = req.user;
+    next();
+});
 
 // Landing Page Routes
 app.get("/", (req, res) => {
     res.render("landingpage");
 });
+
+//Campgrounds Routes
+app.use('/campgrounds', campgroundsRoute);
+
+// Auth Routes
+app.use('/user', authRoute);
+
 
 // Undefined Route
 app.get("*", (req, res) => {
@@ -42,7 +68,7 @@ mongoose.connect(process.env.DB_CONNECTION , {useNewUrlParser: true, useUnifiedT
 
 // Listening to Server
 app.listen(3000, () => {
-    console.log("Yelp Camp Server Has Started!");
+    console.log("Yelp Camp Has Started at Server localhost://3000");
 });
 
 

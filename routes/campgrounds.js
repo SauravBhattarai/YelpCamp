@@ -7,20 +7,24 @@ const Comment = require('../models/comments');
 const campgrounddb = require('../models/addcampgrounds');
 
 
-// Show route
+// INDEX route
 router.get("/", async (req, res) => {
     try {
         const allPosts = await campgrounddb.find();
-
-        res.render("campgrounds", {campgrounds: allPosts});
+        res.render("campgrounds/campgrounds", {campgrounds: allPosts});
     } catch (err) {
         console.log(err);
     };
-    
 });
 
+// NEW campground form
+router.get("/add", isLoggedIn, (req, res) => {
+    res.render("campgrounds/new");
+});
+
+
 // Posting a new campground
-router.post("/", async (req, res) => {
+router.post("/", isLoggedIn, async (req, res) => {
 
     // Get data from form and add to the database
     const newPost = new campgrounddb({
@@ -39,12 +43,7 @@ router.post("/", async (req, res) => {
 
 });
 
-// New campground form
-router.get("/add", (req, res) => {
-    res.render("form");
-});
-
-// Show the specific post
+// SHOWS the specific post
 router.get("/:postId", (req, res) => {
     const postId = req.params.postId;
     try {
@@ -52,14 +51,58 @@ router.get("/:postId", (req, res) => {
             if (error) {
                 console.log(error.message);
             } else {
-                console.log(showPost);
-                res.render("show", {campground: showPost});
+                // console.log(showPost);
+                res.render("campgrounds/show", {campground: showPost});
             }
         });
     } catch (error) {
         console.log(error.message);
     }
 });
+
+// Creating a NEW form for submitting comment
+router.get("/:postId/comments/new", isLoggedIn, (req, res) => {
+    campgrounddb.findById(req.params.postId, (error, campground) => {
+        if (error) {
+            console.log(error.message);
+        } else {
+            res.render("comments/new", {campground: campground});
+        }
+    });
+});
+
+
+router.post("/:postId/comments", isLoggedIn, (req, res) => {
+    campgrounddb.findById(req.params.postId, (error, campground) => {
+        if (error) {
+            console.log(error.message);
+            res.redirect("/");
+        } else {
+            // console.log(req.body.comment);
+            Comment.create(req.body.comment, (error, comment) => {
+                if (error) {
+                    console.log(error.message);
+                } else {
+                    campground.comments.push(comment);
+                    campground.save();
+                    res.redirect("/campgrounds/" + campground._id);
+                }
+            });
+        }
+    });
+});
+
+
+// Authentication Middleware
+function isLoggedIn(req, res, next) {
+    if(req.isAuthenticated()){
+        return next();
+    } else {
+        res.redirect("/user/login");
+    };
+};
+
+
 
 // Exporting the Router 
 module.exports = router;
