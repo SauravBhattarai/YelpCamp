@@ -20,7 +20,14 @@ const addCampgroundSchema = mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: "Comment"
         }
-    ]
+    ],
+    author: {
+        id: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User"
+        },
+        username: String
+    }
 });
 
 // Export the schema as the variable created above and give it a name ('AddCampground' in this case) 

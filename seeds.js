@@ -36,32 +36,31 @@ function seedDB() {
                 }
             });
             
-            console.log("Campgrounds removed");
-            camps.forEach((seed) => {
-                Campground.create(seed, (error, campground) => {
-                    if (error) {
-                        console.log(error.message);
-                    } else {
-                        console.log("Added a Campground");
-                        Comment.create({
-                            text: "This is a great place to chill for a day or two and have your head cleared.",
-                            author: "Rainbow Powell"
-                        }, (error, comment) => {
-                            if (error) {
-                                console.log(error.message);
-                            } else {
-                                campground.comments.push(comment);
-                                campground.save();
-                                console.log("Comment created");
-                            };
-                        });
-                    };
-                });
-            });    
+            // console.log("Campgrounds removed");
+            // camps.forEach((seed) => {
+            //     Campground.create(seed, (error, campground) => {
+            //         if (error) {
+            //             console.log(error.message);
+            //         } else {
+            //             console.log("Added a Campground");
+            //             Comment.create({
+            //                 text: "This is a great place to chill for a day or two and have your head cleared.",
+            //                 author: "Rainbow Powell"
+            //             }, (error, comment) => {
+            //                 if (error) {
+            //                     console.log(error.message);
+            //                 } else {
+            //                     campground.comments.push(comment);
+            //                     campground.save();
+            //                     console.log("Comment created");
+            //                 };
+            //             });
+            //         };
+            //     });
+            // });    
         };
     });
 };
 
 module.exports = seedDB;
-
 

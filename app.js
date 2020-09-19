@@ -3,6 +3,7 @@ const express        = require('express'),
       mongoose       = require('mongoose'),
       passport       = require('passport'),
       LocalStrategy  = require('passport-local'),
+      methodOverride = require('method-override')
       seedDB         = require('./seeds'),
       User           = require('./models/user');
 
@@ -24,6 +25,9 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 // Making the directory "public" static 
 app.use(express.static(__dirname + '/public'));
+
+// Using method override
+app.use(methodOverride("_method"));
 
 // Setting .ejs file to be viewed by default
 app.set("view engine", "ejs");
@@ -69,7 +73,7 @@ app.get("*", (req, res) => {
 
 
 //Connecting to Database
-mongoose.connect(process.env.DB_CONNECTION , {useNewUrlParser: true, useUnifiedTopology: true}, () => {
+mongoose.connect(process.env.DB_CONNECTION , {useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false}, () => {
     console.log("Connected to Database");
 });
 

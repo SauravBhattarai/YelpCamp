@@ -17,6 +17,17 @@
                     <h4 class="float-right">900/night</h4>
                     <h4 class="text-left"><a href="#"><%= campground.name %></a></h4>
                     <p><%= campground.description %></p>
+                    <p><em>Submitted by <%= campground.author.username[0].toUpperCase() + campground.author.username.substring(1) %></em></p>
+                    <div>
+                        <a href="/campgrounds" class="btn bg-primary text-light">Back</a>
+                        <% if (currentUser && campground.author.id.equals(currentUser._id)) { %>
+                            <a href="/campgrounds/<%= campground._id %>/edit" class="btn btn-warning">Edit</a>
+                            <form id="deleteform" action="/campgrounds/<%= campground._id %>?_method=DELETE" method="post">
+                                <button class="btn btn-danger right">Delete</button>
+                            </form>
+                        <% } %>
+                    </div>
+                    
                 </div>
             </div>
             <div class="card-footer" style="width: 100%;">
@@ -27,13 +38,18 @@
                 <% campground.comments.forEach((comment) => { %>
                     <div class="row">
                         <div class="col-md-12">
-                            <strong><%= comment.author %></strong>
+                            <strong><%= comment.author.username[0].toUpperCase() + comment.author.username.substring(1) %></strong>
                             <span class="float-right">10 Days Ago</span>
                             <p><%= comment.text %></p>
+                            <% if (currentUser && comment.author.id.equals(currentUser._id)) { %>
+                                <a href="/campgrounds/<%= campground._id %>/comments/<%= comment._id %>/edit" class="btn btn-xs btn-warning">Edit</a>
+                                <form id="deleteform" action="/campgrounds/<%= campground._id %>/comments/<%= comment._id %>?_method=DELETE" method="post">
+                                    <input type="submit" class="btn btn-xs btn-danger" value="Delete">
+                                </form>
+                            <% } %>                           
                         </div>
                     </div>
                 <% }) %>
-                <a href="/campgrounds" class="btn bg-primary text-light mb-3">Back</a>
             </div>
         </div>
     </div>

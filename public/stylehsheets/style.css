@@ -10,3 +10,7 @@
 .ten-padding {
     padding: 9px;
 }
+
+#deleteform {
+    display: inline;
+}
