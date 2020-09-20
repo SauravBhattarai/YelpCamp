@@ -30,6 +30,7 @@ router.post("/", middlewares.isLoggedIn, async (req, res) => {
         const newPost = new campgrounddb({
             name: req.body.name,
             imageUrl: req.body.imageUrl,
+            price: req.body.price,
             description: req.body.description,
             author: {
                 id: req.user._id,
@@ -39,6 +40,7 @@ router.post("/", middlewares.isLoggedIn, async (req, res) => {
 
         await newPost.save();
         // Redirect to Campgrounds Page
+        req.flash("success", "Campground successfully added");
         res.redirect("/campgrounds");
     } catch (err) {
         console.log(err);
@@ -54,7 +56,6 @@ router.get("/:postId", (req, res) => {
             if (error) {
                 console.log(error.message);
             } else {
-                // console.log(showPost);
                 res.render("campgrounds/show", {campground: showPost});
             }
         });
@@ -70,6 +71,7 @@ router.get("/:postId/edit", middlewares.isAuthorizedCampground, (req, res) => {
             console.log(err.message);
             res.redirect("back");
         } else {
+            req.flash("success", "Campground edited successfully");
             res.render("campgrounds/edit", {campground: foundCampground});
         }
     })    
@@ -96,6 +98,7 @@ router.delete("/:postId", middlewares.isAuthorizedCampground, (req, res) => {
         if (err) {
             res.redirect("/campgrounds");
         } else {
+            req.flash("success", "Campground deleted");
             res.redirect("/campgrounds");
         }
     })

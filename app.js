@@ -2,6 +2,7 @@ const express        = require('express'),
       bodyParser     = require('body-parser'),
       mongoose       = require('mongoose'),
       passport       = require('passport'),
+      flash          = require('connect-flash'),
       LocalStrategy  = require('passport-local'),
       methodOverride = require('method-override')
       seedDB         = require('./seeds'),
@@ -29,6 +30,9 @@ app.use(express.static(__dirname + '/public'));
 // Using method override
 app.use(methodOverride("_method"));
 
+// Using flash
+app.use(flash());
+
 // Setting .ejs file to be viewed by default
 app.set("view engine", "ejs");
 
@@ -45,9 +49,12 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
+
 // Making username as global variable
 app.use((req, res, next) => {
     res.locals.currentUser = req.user;
+    res.locals.error       = req.flash("error");
+    res.locals.success     = req.flash("success");
     next();
 });
 

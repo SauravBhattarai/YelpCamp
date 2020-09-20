@@ -14,7 +14,7 @@
             <div class="thumbnail">
                 <img class="img-fluid rounded mx-auto" src="<%= campground.imageUrl %>" alt="<%= campground.name %>">
                 <div class="ten-padding caption-full">
-                    <h4 class="float-right">900/night</h4>
+                    <h5 class="float-right">Rs.<%= campground.price %>/Night</h5>
                     <h4 class="text-left"><a href="#"><%= campground.name %></a></h4>
                     <p><%= campground.description %></p>
                     <p><em>Submitted by <%= campground.author.username[0].toUpperCase() + campground.author.username.substring(1) %></em></p>
@@ -57,6 +57,3 @@
 
 
 <%- include ("../partials/footer") %> 
-
-
-
